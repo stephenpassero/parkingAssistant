@@ -6,4 +6,8 @@ export default class Navigator {
       navigator.geolocation.getCurrentPosition(resolve, reject, options);
     });
   }
+
+  static watchLocation(positionCallback, errorCallback, options) {
+    navigator.geolocation.watchPosition(positionCallback, errorCallback, options);
+  }
 }

@@ -2,6 +2,7 @@ import React from 'react';
 import Navigator from './utils/Navigator'
 import StreetParkingSpot from './models/StreetParkingSpot'
 import StreetParkingSpotView from './views/StreetParkingSpotView'
+import CurrentLocationView from './views/CurrentLocationView'
 import Loading from './views/Loading'
 
 export default class App extends React.Component {
@@ -9,15 +10,15 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
-    Navigator.currentLocation().then(position => {
-      this.setState(() => ({ parkingSpot : new StreetParkingSpot(position.coords)}))
-
+    Navigator.watchLocation(position => {
+      this.setState(() => ({ position : position}))
     })
+
   }
   render() {
-    if (this.state.parkingSpot) {
+    if (this.state.position) {
       return (
-        <StreetParkingSpotView parkingSpot={this.state.parkingSpot}/>
+        <CurrentLocationView position={this.state.position}/>
       );
     }
     else {
