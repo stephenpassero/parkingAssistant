@@ -18,10 +18,10 @@ export default class App extends React.Component {
     }
   }
 
-  setLocation(newLocation) {
+  setLocation(location) {
     this.setState(() => {
       return {
-        location: newLocation
+        location: {latitude: location.coords.latitude, longitude: location.coords.longitude}
       }
     })
   }
@@ -42,7 +42,7 @@ export default class App extends React.Component {
       )
     } else if (this.state.location && this.state.heading){
       return (
-        <ParkedView/>
+        <ParkedView location={this.state.location} heading={this.state.heading}/>
       )
     } else{
       return (

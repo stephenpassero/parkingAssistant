@@ -17,6 +17,8 @@ export default class ParkedView extends React.Component {
     return (
       <View style={styles.container}>
         <Text>You have 1:43 until you need to move your car</Text>
+        <Text>Lat: {this.props.location.latitude}, Long: {this.props.location.latitude}</Text>
+        <Text>Heading: {this.props.heading}</Text>
       </View>
     );
   }
