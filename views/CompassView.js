@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import PropTypes from 'prop-types'
 import Navigator from '../utils/Navigator'
+import { Button } from 'react-native';
 
 const styles = StyleSheet.create({
   container: {
@@ -41,6 +42,7 @@ export default class CompassView extends React.Component {
     return (
       <View style={styles.container}>
         <Text>Heading: {this.state.heading}</Text>
+        <Button title="Ok" onPress={() => this.props.setHeading(this.state.heading)}/>
       </View>
     );
   }

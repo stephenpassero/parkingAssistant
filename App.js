@@ -5,13 +5,49 @@ import StreetParkingSpotView from './views/StreetParkingSpotView'
 import CurrentLocationView from './views/CurrentLocationView'
 import Loading from './views/Loading'
 import CompassView from './views/CompassView'
+import HomeView from './views/HomeView'
+import ParkedView from './views/ParkedView'
 
 export default class App extends React.Component {
 
+  constructor(props){
+    super(props)
+    this.state = {
+      location: false,
+      heading: false
+    }
+  }
+
+  setLocation(newLocation) {
+    this.setState(() => {
+      return {
+        location: newLocation
+      }
+    })
+  }
+
+  setHeading(newHeading) {
+    console.log(`Setting Heading to ${newHeading}`)
+    this.setState(() => {
+      return {
+        heading: newHeading
+      }
+    })
+  }
 
   render() {
-    return (
-      <CompassView/>
-    );
+    if(this.state.location && !this.state.heading) {
+      return (
+        <CompassView setHeading={this.setHeading.bind(this)}/>
+      )
+    } else if (this.state.location && this.state.heading){
+      return (
+        <ParkedView/>
+      )
+    } else{
+      return (
+        <HomeView setLocation={this.setLocation.bind(this)}/>
+      )
+    }
   }
 }
