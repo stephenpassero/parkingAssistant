@@ -21,7 +21,7 @@ export default class StreetParkingSpotView extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>You are parked at {this.props.parkingSpot.location()}</Text>
+        <Text>You are parked at {this.props.parkingSpot.location().latitude}, {this.props.parkingSpot.location().longitude}</Text>
       </View>
     );
   }

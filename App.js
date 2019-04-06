@@ -8,6 +8,7 @@ export default class App extends React.Component {
 
   constructor(props) {
     super(props)
+    this.state = {}
     Navigator.currentLocation().then(position => {
       this.setState(() => ({ parkingSpot : new StreetParkingSpot(position.coords)}))
 
