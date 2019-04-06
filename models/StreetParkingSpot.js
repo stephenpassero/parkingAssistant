@@ -3,9 +3,11 @@ class StreetParkingSpot {
   /**
    * Constructor
    * @param {Coordinates} coordinates - Geolocation Web API Coordinate object
+   * @param {Navigator} navigator - Reverse geocode API
    */
-  constructor(coordinates){
+  constructor(coordinates, navigator){
     this._coordinates = coordinates
+    this._navigator = navigator
   }
 
   location(){
@@ -13,6 +15,10 @@ class StreetParkingSpot {
       "latitude":  this._coordinates.latitude,
       "longitude": this._coordinates.longitude
     }
+  }
+
+  side() {
+    return "even"
   }
 }
 
