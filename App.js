@@ -14,7 +14,6 @@ export default class App extends React.Component {
       distanceInterval: 0
     }
     const watchLocationCallback = position => {
-      console.log('Updating position')
       this.setState(() => ({ position : position}))
     }
 

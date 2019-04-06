@@ -1,4 +1,4 @@
-import { Location, Permissions } from 'expo';
+import { Location, Permissions, Magnetometer } from 'expo';
 
 export default class Navigator {
 
@@ -24,20 +24,48 @@ export default class Navigator {
     return Location.getCurrentPositionAsync(options)
   }
 
-  async currentHeading(options) {
-    return Location.getHeadingAsync(options)
-  }
+  // async addHeadingToLocation(angle, locationOptions) {
+  //   const position = await this.currentLocation(locationOptions)
+  //   position.heading = angle
+  //   return position
+  // }
 
-  async currentLocationAndHeading(locationOptions, headingOptions) {
+  // async currentHeading(options) {
+  //   return Location.getHeadingAsync(options)
+  // }
+
+  async addHeadingToLocation(heading, locationOptions) {
     const position = await this.currentLocation(locationOptions)
-    position.heading = await this.currentHeading(headingOptions)
+    position.coords.heading = heading
     return position
   }
 
+  _degree(angle) {
+    return angle - 90 >= 0 ? angle - 90 : angle + 271;
+  }
+
+  _angle(magnetometer) {
+
+    if (magnetometer) {
+      let {x, y, z} = magnetometer;
+
+      if (Math.atan2(y, x) >= 0) {
+        angle = Math.atan2(y, x) * (180 / Math.PI);
+      }
+      else {
+        angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
+      }
+    }
+
+    return Math.round(angle);
+  }
+
   watchLocation(positionCallback, errorCallback, options) {
-    setInterval(
-      () => this.currentLocationAndHeading(options).then(position => positionCallback(position)),
-      1000
-    )
+    Magnetometer.addListener(magData => {
+      const heading = this._degree(this._angle(magData))
+
+      this.addHeadingToLocation(heading, options)
+          .then(position => positionCallback(position))
+    })
   }
 }
