@@ -2,6 +2,7 @@ import React from 'react';
 import Navigator from './utils/Navigator'
 import StreetParkingSpot from './models/StreetParkingSpot'
 import StreetParkingSpotView from './views/StreetParkingSpotView'
+import Loading from './views/Loading'
 
 export default class App extends React.Component {
 
@@ -13,8 +14,13 @@ export default class App extends React.Component {
     })
   }
   render() {
-    return (
-      <StreetParkingSpotView parkingSpot={this.state.parkingSpot}/>
-    );
+    if (this.state.parkingSpot) {
+      return (
+        <StreetParkingSpotView parkingSpot={this.state.parkingSpot}/>
+      );
+    }
+    else {
+      return <Loading/>
+    }
   }
 }
