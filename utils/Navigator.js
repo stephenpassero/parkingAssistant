@@ -60,12 +60,19 @@ export default class Navigator {
     return Math.round(angle);
   }
 
-  watchLocation(positionCallback, errorCallback, options) {
-    Magnetometer.addListener(magData => {
-      const heading = this._degree(this._angle(magData))
+  // watchLocation(positionCallback, errorCallback, options) {
+  //   Magnetometer.addListener(magData => {
+  //     const heading = this._degree(this._angle(magData))
+  //     positionCallback({coords: {latitude: 0, longitude: 0, heading: heading}, timestamp: 2})
+  //     // this.addHeadingToLocation(heading, options)
+  //     //     .then(position => positionCallback(position))
+  //   })
+  // }
 
-      this.addHeadingToLocation(heading, options)
-          .then(position => positionCallback(position))
+  watchHeading(options, headingCallback) {
+    return Magnetometer.addListener(magData => {
+      const heading = this._degree(this._angle(magData))
+      headingCallback(heading)
     })
   }
 }
