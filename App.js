@@ -10,11 +10,20 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {}
-    Navigator.watchLocation(position => {
+    const watchLocationOptions = {
+      distanceInterval: 0
+    }
+    const watchLocationCallback = position => {
+      console.log('Updating position')
       this.setState(() => ({ position : position}))
-    })
+    }
 
+    this._navigator = new Navigator()
+    this._navigator.askPermission().then(() => {
+      this._navigator.watchLocation(watchLocationCallback, null, watchLocationOptions)
+    })
   }
+
   render() {
     if (this.state.position) {
       return (
