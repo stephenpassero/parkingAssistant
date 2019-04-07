@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import CountDown from "react-native-countdown-component";
 import PropTypes from "prop-types";
 
@@ -54,12 +54,30 @@ export default class ParkedView extends React.Component {
             //on Press call
             size={35}
           />
+          <TouchableHighlight
+            // onPress={this.getLatLong.bind(this)}
+            underlayColor="white"
+            accessibilityLabel="Park Here button"
+          >
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Park Here</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight
+            // onPress={this.getLatLong.bind(this)}
+            underlayColor="white"
+            accessibilityLabel="Cancel Notification button"
+          >
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Cancel</Text>
+            </View>
+          </TouchableHighlight>
         </View>
       );
     } else {
       return (
         <View style={styles.container}>
-          <Text>Calculating time remaining...</Text>
+          <Text style={styles.paragraph}>Calculating time remaining...</Text>
         </View>
       );
     }
@@ -79,6 +97,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     color: "#fff",
-    paddingBottom: 75
+    paddingBottom: 50
+  },
+  button: {
+    marginTop: 30,
+    marginBottom: 30,
+    width: 200,
+    alignItems: "center",
+    backgroundColor: "#fff"
+  },
+  buttonText: {
+    padding: 20,
+    color: "#000",
+    fontSize: 20,
+    fontWeight: "bold"
   }
 });
