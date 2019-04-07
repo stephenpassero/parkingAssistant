@@ -8,25 +8,20 @@ export default class HomeView extends React.Component {
     super(props);
     this._navigator = new Navigator();
     this.state = {
-      location: {},
-      errorMessage: ""
-    };
+      errorMessage: ''
+    }
   }
 
-  getLatLong() {
-    this._navigator
-      .currentLocation({})
-      .then(coords => {
-        this.setState({ location: coords });
-        this.props.setLocation(this.state.location);
+  getLatLong(){
+    this._navigator.currentLocation({})
+    .then(position => this.props.setLocation(position))
+    .catch(error => {
+      this.setState(() => {
+        return {
+          errorMessage: error.message
+        }
       })
-      .catch(error => {
-        this.setState(() => {
-          return {
-            errorMessage: error.message
-          };
-        });
-      });
+    })
   }
 
   render() {
@@ -36,17 +31,16 @@ export default class HomeView extends React.Component {
         <TouchableHighlight
           onPress={this.getLatLong.bind(this)}
           underlayColor="white"
-          accessibilityLabel="Park Here button"
-        >
+          accessibilityLabel="Park Here button">
           <View style={styles.button}>
             <Text style={styles.buttonText}>Park Here</Text>
           </View>
         </TouchableHighlight>
         <Text>{this.state.errorMessage}</Text>
       </View>
-    );
+    )
   }
-}
+} // end of class
 
 const styles = StyleSheet.create({
   container: {
