@@ -28,7 +28,7 @@ export default class Navigator {
     return permission.then(granted => {
       if (granted) {
         return Location.getCurrentPositionAsync({
-          accuracy: 3
+          accuracy: 4
         })
       } else {
         throw new Error("Unable to get location -- permission not granted")

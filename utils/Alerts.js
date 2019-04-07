@@ -3,8 +3,10 @@ import { Permissions, Notifications } from 'expo'
 export default class Alerts {
 
   async scheduleAlert(alertTime) {
-    await this._requestPermissionToNotifyUser()
-    await this._scheduleLocalNotification(alertTime)
+    if (alertTime > 0) {
+      await this._requestPermissionToNotifyUser()
+      await this._scheduleLocalNotification(alertTime)
+    }
   }
 
   async cancelScheduledAlerts() {

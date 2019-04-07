@@ -83,9 +83,10 @@ class StreetParkingSpot {
   }
 
   async _calculateSide() {
-    const distance = 20 // We always want to get a position 25 feet away
+    const distance = 20
+    console.log(`yourLatLong: (${this.latitude()},${this.longitude()})`)
     const rightSideStreetLatLong = this.locationInDirection(this.toTheRight(), distance)
-    console.log(JSON.stringify(rightSideStreetLatLong))
+    console.log(`rightSideLatLong: (${rightSideStreetLatLong.latitude},${rightSideStreetLatLong.longitude}`)
     const rightSideStreetAddr = await this._navigator.lookupAddress(rightSideStreetLatLong)
 
     const leftSideStreetLatLong = this.locationInDirection(this.toTheLeft(), distance * 2)
@@ -99,15 +100,16 @@ class StreetParkingSpot {
       // opposite side of what left is....
       this._side = this.isEven(leftSideStreetAddr.streetNumber) ? 'odd' : 'even'
     }
-    console.log(`You are park on the ${this._side} side of the street`)
+    console.log(`You are parked on the ${this._side} side of the street`)
   }
 
   _alertTime() {
     const alertWindow = 15 * 60 // seconds
-    const timeUntilAlertWindow = this.timeRemaining() - alertWindow // seconds
-    const alertTime = new Date().getTime() + timeUntilAlertWindow * 1000 // milliseconds
-    console.log(`Scheduling alert at ${alertTime}`)
-    return alertTime
+    const timeRemaining = this.timeRemaining()
+    const timeUntilAlertWindow = Math.max(timeRemaining - alertWindow, timeRemaining) // seconds
+    if (timeUntilAlertWindow > 0) {
+      return new Date().getTime() + timeUntilAlertWindow * 1000 // milliseconds
+    }
   }
 
   timeRemaining(){
