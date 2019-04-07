@@ -30,7 +30,7 @@ export default class HomeView extends React.Component {
         <Text style={styles.paragraph}>Parking Assistant</Text>
         <TouchableHighlight
           onPress={this.getLatLong.bind(this)}
-          underlayColor="white"
+          underlayColor="#D3D4D9"
           accessibilityLabel="Park Here button">
           <View style={styles.button}>
             <Text style={styles.buttonText}>Park Here</Text>

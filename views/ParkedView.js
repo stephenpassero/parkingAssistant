@@ -100,14 +100,11 @@ export default class ParkedView extends React.Component {
             Time remaining until you need to move your car
           </Text>
           <CountDown
+            // Duration of countdown in seconds
             until={this.state.timeRemaining}
-            //duration of countdown in seconds
             timetoShow={["H", "M", "S"]}
-            //formate to show
+            // We need to have this actually do something
             onFinish={() => alert("finished")}
-            //on Finish call
-            onPress={() => alert("hello")}
-            //on Press call
             size={35}
           />
           <TouchableHighlight
