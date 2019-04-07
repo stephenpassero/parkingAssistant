@@ -34,16 +34,6 @@ export default class Navigator {
     })
   }
 
-  // async addHeadingToLocation(angle, locationOptions) {
-  //   const position = await this.currentLocation(locationOptions)
-  //   position.heading = angle
-  //   return position
-  // }
-
-  // async currentHeading(options) {
-  //   return Location.getHeadingAsync(options)
-  // }
-
   async addHeadingToLocation(heading, locationOptions) {
     const position = await this.currentLocation(locationOptions)
     position.coords.heading = heading
@@ -70,19 +60,27 @@ export default class Navigator {
     return Math.round(angle);
   }
 
-  // watchLocation(positionCallback, errorCallback, options) {
-  //   Magnetometer.addListener(magData => {
-  //     const heading = this._degree(this._angle(magData))
-  //     positionCallback({coords: {latitude: 0, longitude: 0, heading: heading}, timestamp: 2})
-  //     // this.addHeadingToLocation(heading, options)
-  //     //     .then(position => positionCallback(position))
-  //   })
-  // }
-
   watchHeading(options, headingCallback) {
     return Magnetometer.addListener(magData => {
       const heading = this._degree(this._angle(magData))
       headingCallback(heading)
     })
+  }
+
+  async lookupAddress(coordinates){
+    const keyParam = `key=AIzaSyC9Dcx8pDlYPPQp2TGGIFNx0vEonnhjb8o`
+    const latLongParam = `latlng=40.714224,-73.96145`
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?${latLongParam}&${keyParam}`
+    const response = await fetch(url)
+    if (!response.ok) {
+      throw new Error(response.errorCode)
+    }
+
+    const result = await response.json()
+    return {
+      "streetNumber" : result.results.address_components[0].long_name,
+      "route" : result.results.address_components[1].long_name
+    }
+
   }
 }
