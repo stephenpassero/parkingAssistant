@@ -18,16 +18,15 @@ export default class App extends React.Component {
     }
   }
 
-  setLocation(location) {
+  setLocation(position) {
     this.setState(() => {
       return {
-        location: {latitude: location.coords.latitude, longitude: location.coords.longitude}
+        position: position
       }
     })
   }
 
   setHeading(newHeading) {
-    console.log(`Setting Heading to ${newHeading}`)
     this.setState(() => {
       return {
         heading: newHeading
@@ -35,14 +34,24 @@ export default class App extends React.Component {
     })
   }
 
+  _parkingSpot() {
+    const coordinatesWithHeading = Object.assign(
+      {},
+      this.state.position.coords,
+      { heading: this.state.heading }
+    )
+    return new StreetParkingSpot(coordinatesWithHeading, new Navigator())
+  }
+
+
   render() {
-    if(this.state.location && !this.state.heading) {
+    if(this.state.position && !this.state.heading) {
       return (
         <CompassView setHeading={this.setHeading.bind(this)}/>
       )
-    } else if (this.state.location && this.state.heading){
+    } else if (this.state.position && this.state.heading){
       return (
-        <ParkedView location={this.state.location} heading={this.state.heading}/>
+        <ParkedView parkingSpot={this._parkingSpot()}/>
       )
     } else{
       return (
