@@ -1,8 +1,15 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TouchableHighlight
+} from "react-native";
 import CountDown from "react-native-countdown-component";
 import PropTypes from "prop-types";
-import CrimeAlerts from '../models/CrimeAlerts'
+import CrimeAlerts from "../models/CrimeAlerts";
+import compass_pointer from "./../assets/compass_pointer.png";
 
 export default class ParkedView extends React.Component {
   constructor(props) {
@@ -14,8 +21,8 @@ export default class ParkedView extends React.Component {
   }
 
   static propTypes = {
-    parkingSpot : PropTypes.object.isRequired
-  }
+    parkingSpot: PropTypes.object.isRequired
+  };
 
   updateTimeRemaining() {
     this.setState(() => {
@@ -29,14 +36,18 @@ export default class ParkedView extends React.Component {
     this.setState(() => {
       return {
         crimeNearby: crime
-      }
-    })
+      };
+    });
   }
 
   requestCrimeAlerts() {
-    new CrimeAlerts().getAlertsFor(this.props.parkingSpot.latitude(), this.props.parkingSpot.longitude())
-                     .then(crime => this.updateCrimeAlert(crime))
-                     .catch(error => console.log('Unable to fetch crime alerts: ' + error))
+    new CrimeAlerts()
+      .getAlertsFor(
+        this.props.parkingSpot.latitude(),
+        this.props.parkingSpot.longitude()
+      )
+      .then(crime => this.updateCrimeAlert(crime))
+      .catch(error => console.log("Unable to fetch crime alerts: " + error));
   }
 
   componentDidMount() {
@@ -44,7 +55,7 @@ export default class ParkedView extends React.Component {
       this.updateTimeRemaining.bind(this),
       1000
     );
-    this.requestCrimeAlerts()
+    this.requestCrimeAlerts();
   }
 
   componentWillUnmount() {
@@ -52,11 +63,11 @@ export default class ParkedView extends React.Component {
   }
 
   renderCrimeAlerts() {
-    return this.state.crimeNearby ?
-      <Text>Beware of {this.state.crimeNearby} nearby!</Text> :
-      null
+    return this.state.crimeNearby ? (
+      <Text>Beware of {this.state.crimeNearby} nearby!</Text>
+    ) : null;
   }
-  
+
   render() {
     if (this.state.timeRemaining) {
       return (
@@ -65,6 +76,12 @@ export default class ParkedView extends React.Component {
         // </View>
 
         <View style={styles.container}>
+          <Image
+            source={compass_pointer}
+            style={{
+              resizeMode: "contain"
+            }}
+          />
           {this.renderCrimeAlerts()}
           <Text style={styles.paragraph}>
             Time remaining until you need to move your car
