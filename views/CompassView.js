@@ -71,7 +71,7 @@ export default class CompassView extends React.Component {
             justifyContent: "center",
             alignItems: "center",
             resizeMode: "contain",
-            transform: [{ rotate: 360 - this.state.heading + "deg" }]
+            transform: [{ rotate: 360 - 90 - this.state.heading + "deg" }]
           }}
         />
         <Text style={styles.heading}>Heading: {this.state.heading}</Text>

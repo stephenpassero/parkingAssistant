@@ -41,7 +41,7 @@ export default class Navigator {
   _angle(magnetometer) {
 
     if (magnetometer) {
-      let {x, y, z} = magnetometer;
+      let {x, y} = magnetometer;
 
       if (Math.atan2(y, x) >= 0) {
         angle = Math.atan2(y, x) * (180 / Math.PI);
