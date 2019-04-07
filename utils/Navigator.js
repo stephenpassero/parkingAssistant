@@ -9,6 +9,7 @@ export default class Navigator {
   askPermission() {
     return Permissions.askAsync(Permissions.LOCATION)
                       .then(this.setPermissionRequestResult.bind(this))
+                      .then(() => this.permissionGranted())
   }
 
   permissionGranted() {
@@ -17,11 +18,20 @@ export default class Navigator {
 
   setPermissionRequestResult(result) {
     this._permissionGranted = result.status
-    console.log(`Permission granted = ${this._permissionGranted}`)
   }
 
   async currentLocation(options) {
-    return Location.getCurrentPositionAsync(options)
+    let permission = Promise.resolve(true)
+    if(!this.permissionGranted()) {
+      permission = this.askPermission()
+    }
+    return permission.then(granted => {
+      if (granted) {
+        return Location.getCurrentPositionAsync(options)
+      } else {
+        throw new Error("Unable to get location -- permission not granted")
+      }
+    })
   }
 
   // async addHeadingToLocation(angle, locationOptions) {

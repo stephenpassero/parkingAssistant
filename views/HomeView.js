@@ -18,7 +18,10 @@ export default class HomeView extends React.Component {
   constructor(props){
     super(props)
     this._navigator = new Navigator()
-    this.state = {location: {}}
+    this.state = {
+      location: {},
+      errorMessage: ''
+    }
   }
 
   getLatLong(){
@@ -27,13 +30,20 @@ export default class HomeView extends React.Component {
         this.setState({location: coords})
         this.props.setLocation(this.state.location)
       }
-    )
+    ).catch(error => {
+      this.setState(() => {
+        return {
+          errorMessage: error.message
+        }
+      })
+    })
   }
 
   render() {
     return (
       <View style={styles.container}>
         <Button title="Park Here" onPress={this.getLatLong.bind(this)}/>
+        <Text>{this.state.errorMessage}</Text>
       </View>
     );
   }

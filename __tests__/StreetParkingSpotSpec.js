@@ -57,8 +57,15 @@ describe("StreetParkingSpot", () => {
     describe('when facing east in front of 214 Melrose St, 14619', () => {
 
       beforeEach(() => {
-
-
+        coordinates = {
+          latitude: 0,
+          longitude: 0,
+          heading: 0,
+        }
+        navigator.lookupAddress
+                 .mockReturnValueOnce(makeLookupAddrResponse(215, "Melrose St"))
+                 .mockReturnValueOnce(makeLookupAddrResponse(214, "Melrose St"))
+        spot = new StreetParkingSpot(coordinates, navigator)
       })
 
       it('is odd', () => {
