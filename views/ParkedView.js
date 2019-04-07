@@ -69,23 +69,33 @@ export default class ParkedView extends React.Component {
     clearInterval(this._countdownInterval);
   }
 
-  renderCrimeAlerts() {
-    return this.state.crimeNearby ? (
-      <Text>Beware of {this.state.crimeNearby} nearby!</Text>
-    ) : null;
+  showCrimeAlerts() {
+    if(this.state.crimeNearby){
+      alert(`Beware of ${this.state.crimeNearby} nearby.`)
+    }
   }
 
+  renderCrimeAlertIcon() {
+    if (!this.state.crimeNearby) {
+      return null;
+    }
+    
+    return (
+      <TouchableHighlight onPress={() => this.showCrimeAlerts()}>
+        <Image
+          source={compass_pointer}
+          style={{
+            resizeMode: "contain"
+          }}
+          />
+      </TouchableHighlight>
+    )
+  }
   render() {
     if (this.state.timeRemaining) {
       return (
         <View style={styles.container}>
-          <Image
-            source={compass_pointer}
-            style={{
-              resizeMode: "contain"
-            }}
-          />
-          {this.renderCrimeAlerts()}
+          {this.renderCrimeAlertIcon()}
           <Text style={styles.paragraph}>
             Time remaining until you need to move your car
           </Text>

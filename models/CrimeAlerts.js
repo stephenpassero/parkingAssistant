@@ -3,7 +3,7 @@ export default class CrimeAlerts {
   async getAlertsFor(latitude, longitude) {
     const testUrl = 'http://0690542e.ngrok.io'
     const prodUrl = 'https://polar-atoll-37033.herokuapp.com'
-    const url = `${prodUrl}/userData?latitude=${latitude}&longitude=${longitude}`
+    const url = `${testUrl}/userData?latitude=${latitude}&longitude=${longitude}`
     console.log(`Requesting crime data from ${url}`)
     const response = await fetch(url)
     if (!response.ok) {
