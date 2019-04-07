@@ -51,18 +51,6 @@ export default class CompassView extends React.Component {
             resizeMode: "contain"
           }}
         />
-        {/* <ImageBackground
-          source={compass_bg}
-          style={{
-            height: width - 80,
-            justifyContent: "center",
-            alignItems: "center",
-            resizeMode: "contain",
-            transform: [{ rotate: 360 - this.state.heading + "deg" }]
-          }}
-        >
-          <Text style={styles.heading}>Heading: {this.state.heading}</Text>
-        </ImageBackground> */}
 
         <Image
           source={compass_bg}
@@ -91,7 +79,7 @@ export default class CompassView extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#000",
+    backgroundColor: "#173753",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -99,17 +87,18 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 260,
     alignItems: "center",
-    backgroundColor: "white"
+    backgroundColor: "#D3D4D9",
+    borderRadius: 10
   },
   buttonText: {
     padding: 20,
-    color: "#2196F3",
+    color: "#3066BE",
     fontSize: 30,
     fontWeight: "bold"
   },
   heading: {
     textAlign: "center",
-    color: "white",
+    color: "#D3D4D9",
     fontSize: 30,
     fontWeight: "bold",
     padding: 20

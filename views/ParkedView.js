@@ -79,7 +79,7 @@ export default class ParkedView extends React.Component {
     if (!this.state.crimeNearby) {
       return null;
     }
-    
+
     return (
       <TouchableHighlight onPress={() => this.showCrimeAlerts()}>
         <Image
@@ -133,7 +133,7 @@ export default class ParkedView extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#281de4",
+    backgroundColor: "#D3D4D9",
     alignItems: "center",
     justifyContent: "center"
   },
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontWeight: "bold",
     textAlign: "center",
-    color: "#fff",
+    color: "#3066BE",
     paddingBottom: 50
   },
   button: {
@@ -150,11 +150,12 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     width: 200,
     alignItems: "center",
-    backgroundColor: "#fff"
+    backgroundColor: "#3066BE",
+    borderRadius: 10
   },
   buttonText: {
     padding: 20,
-    color: "#000",
+    color: "#D3D4D9",
     fontSize: 20,
     fontWeight: "bold"
   }

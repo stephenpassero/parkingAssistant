@@ -83,7 +83,7 @@ class StreetParkingSpot {
   }
 
   async _calculateSide() {
-    const distance = 20 // We always want to get a position 20 feet away
+    const distance = 25 // We always want to get a position 25 feet away
     const rightSideStreetLatLong = this.locationInDirection(this.toTheRight(), distance)
     const rightSideStreetAddr = await this._navigator.lookupAddress(rightSideStreetLatLong)
     console.log(JSON.stringify(rightSideStreetLatLong))
