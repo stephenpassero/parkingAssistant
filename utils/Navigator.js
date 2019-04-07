@@ -63,7 +63,7 @@ export default class Navigator {
 
   async lookupAddress(coordinates){
     const keyParam = `key=AIzaSyC9Dcx8pDlYPPQp2TGGIFNx0vEonnhjb8o`
-    const latLongParam = `latlng=40.714224,-73.96145`
+    const latLongParam = `latlng=${coordinates.latitude},${coordinates.longitude}`
     const url = `https://maps.googleapis.com/maps/api/geocode/json?${latLongParam}&${keyParam}`
     const response = await fetch(url)
     if (!response.ok) {

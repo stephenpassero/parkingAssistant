@@ -20,16 +20,19 @@ class StreetParkingSpot {
     this._coordinates = coordinates
     this._navigator = navigator
     this._rules = new StreetParkingRules()
-    this._calculateSide().catch(error => {
-      console.log('Unable to calculate side of street: ' + error)
-    })
+    this._lookupAddress()
+        .then(() => this._calculateSide())
+        .catch(error => {
+          console.log('Unable to calculate side of street: ' + error)
+        })
   }
 
-  location(){
-    return {
-      "latitude":  this._coordinates.latitude,
-      "longitude": this._coordinates.longitude
-    }
+  async _lookupAddress() {
+    this._address = await this._navigator.lookupAddress(this._coordinates)
+  }
+
+  address() {
+    return this._address
   }
 
   latitude() {
@@ -44,7 +47,7 @@ class StreetParkingSpot {
     return this._coordinates.heading
   }
 
-  getLocationInDirection(direction, distance){
+  locationInDirection(direction, distance){
     const dx = distance * Math.cos(Math.radians(direction))
     const dy = distance * Math.sin(Math.radians(direction))
     const deltaLongitude = dx / (111320 * Math.cos(Math.radians(this.latitude())))
@@ -71,10 +74,10 @@ class StreetParkingSpot {
 
   async _calculateSide() {
     const distance = 20 // We always want to get a position 20 feet away
-    const rightSideStreetLatLong = this.getLocationInDirection(this.toTheRight(), distance)
+    const rightSideStreetLatLong = this.locationInDirection(this.toTheRight(), distance)
     const rightSideStreetAddr = await this._navigator.lookupAddress(rightSideStreetLatLong)
 
-    const leftSideStreetLatLong = this.getLocationInDirection(this.toTheLeft(), distance * 2)
+    const leftSideStreetLatLong = this.locationInDirection(this.toTheLeft(), distance * 2)
     const leftSideStreetAddr = await this._navigator.lookupAddress(leftSideStreetLatLong)
 
     this._side = this.isEven(rightSideStreetAddr.streetNumber) ? 'even' : 'odd'
