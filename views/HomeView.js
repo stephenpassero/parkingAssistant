@@ -13,7 +13,7 @@ export default class HomeView extends React.Component {
   }
 
   getLatLong(){
-    this._navigator.currentLocation({})
+    this._navigator.currentLocation()
     .then(position => this.props.setLocation(position))
     .catch(error => {
       this.setState(() => {

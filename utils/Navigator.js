@@ -20,14 +20,16 @@ export default class Navigator {
     this._permissionGranted = result.status
   }
 
-  async currentLocation(options) {
+  async currentLocation() {
     let permission = Promise.resolve(true)
     if(!this.permissionGranted()) {
       permission = this.askPermission()
     }
     return permission.then(granted => {
       if (granted) {
-        return Location.getCurrentPositionAsync(options)
+        return Location.getCurrentPositionAsync({
+          accuracy: 3
+        })
       } else {
         throw new Error("Unable to get location -- permission not granted")
       }
