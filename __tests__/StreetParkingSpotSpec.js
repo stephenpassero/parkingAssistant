@@ -20,21 +20,12 @@ describe("StreetParkingSpot", () => {
 
   describe('#streetSide', () => {
     const makeLookupAddrResponse = (houseNumber, streetName) => {
-      return {
-        "address_components" : [
-          {
-            "long_name" : houseNumber,
-            "short_name" : houseNumber,
-            "types" : [ "street_number" ]
-          },
-          {
-            "long_name" : streetName,
-            "short_name" : streetName,
-            "types" : [ "route" ]
-          }
-        ]
+      return Promise.resolve(
+        {
+          'streetNumber' : houseNumber,
+          'route': streetName
+        })
       }
-    }
     describe('when facing west in front of 214 Melrose St, 14619', () => {
 
       beforeEach(() => {
@@ -44,13 +35,14 @@ describe("StreetParkingSpot", () => {
           heading: 0,
         }
         navigator.lookupAddress
-                 .mockReturnValueOnce(makeLookupAddrResponse(214, "Melrose St"))
-                 .mockReturnValueOnce(makeLookupAddrResponse(211, "Melrose St"))
+                 .mockReturnValueOnce(makeLookupAddrResponse('214', "Melrose Street"))
+                 .mockReturnValueOnce(makeLookupAddrResponse('211', "Melrose Street"))
         spot = new StreetParkingSpot(coordinates, navigator)
       })
 
       it('is even', () => {
-        expect(spot.side()).toEqual('even')
+        expect.assertions(1)
+        return expect(spot.side()).resolves.toEqual('even')
       })
     })
 
@@ -69,7 +61,8 @@ describe("StreetParkingSpot", () => {
       })
 
       it('is odd', () => {
-        expect(spot.side()).toEqual('odd')
+        expect.assertions(1)
+        return expect(spot.side()).resolves.toEqual('odd')
       })
     })
 
