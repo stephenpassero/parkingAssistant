@@ -34,12 +34,6 @@ export default class Navigator {
     })
   }
 
-  async addHeadingToLocation(heading, locationOptions) {
-    const position = await this.currentLocation(locationOptions)
-    position.coords.heading = heading
-    return position
-  }
-
   _degree(angle) {
     return angle - 90 >= 0 ? angle - 90 : angle + 271;
   }
@@ -77,9 +71,10 @@ export default class Navigator {
     }
 
     const result = await response.json()
+    const mostSpecificAddress = result.results[0]
     return {
-      "streetNumber" : result.results.address_components[0].long_name,
-      "route" : result.results.address_components[1].long_name
+      "streetNumber" : mostSpecificAddress.address_components[0].long_name,
+      "route" : mostSpecificAddress.address_components[1].long_name
     }
 
   }

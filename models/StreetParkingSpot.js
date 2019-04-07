@@ -1,3 +1,5 @@
+import StreetParkingRules from './StreetParkingRules'
+
 Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
 };
@@ -17,6 +19,10 @@ class StreetParkingSpot {
   constructor(coordinates, navigator){
     this._coordinates = coordinates
     this._navigator = navigator
+    this._rules = new StreetParkingRules()
+    this._calculateSide().catch(error => {
+      console.log('Unable to calculate side of street: ' + error)
+    })
   }
 
   location(){
@@ -63,7 +69,7 @@ class StreetParkingSpot {
     return parseInt(streetNumber) % 2 === 0
   }
 
-  async side() {
+  async _calculateSide() {
     const distance = 20 // We always want to get a position 20 feet away
     const rightSideStreetLatLong = this.getLocationInDirection(this.toTheRight(), distance)
     const rightSideStreetAddr = await this._navigator.lookupAddress(rightSideStreetLatLong)
@@ -71,7 +77,13 @@ class StreetParkingSpot {
     const leftSideStreetLatLong = this.getLocationInDirection(this.toTheLeft(), distance * 2)
     const leftSideStreetAddr = await this._navigator.lookupAddress(leftSideStreetLatLong)
 
-    return this.isEven(rightSideStreetAddr.streetNumber) ? 'even' : 'odd'
+    this._side = this.isEven(rightSideStreetAddr.streetNumber) ? 'even' : 'odd'
+  }
+
+  timeRemaining(){
+    if (this._side) {
+      return this._rules.timeRemainingOnSide(new Date(), this._side)
+    }
   }
 }
 
