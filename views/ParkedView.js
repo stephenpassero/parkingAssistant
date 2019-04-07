@@ -26,19 +26,23 @@ export default class ParkedView extends React.Component {
   };
 
   updateTimeRemaining() {
-    this.setState(() => {
-      return {
-        timeRemaining: this.props.parkingSpot.timeRemaining()
-      };
-    });
+    if (this._mounted) {
+      this.setState(() => {
+        return {
+          timeRemaining: this.props.parkingSpot.timeRemaining()
+        };
+      });
+    }
   }
 
   updateCrimeAlert(crime) {
-    this.setState(() => {
-      return {
-        crimeNearby: crime
-      };
-    });
+    if (this._mounted) {
+      this.setState(() => {
+        return {
+          crimeNearby: crime
+        };
+      });
+    }
   }
 
   requestCrimeAlerts() {
@@ -52,6 +56,7 @@ export default class ParkedView extends React.Component {
   }
 
   componentDidMount() {
+    this._mounted = true
     this._countdownInterval = setInterval(
       this.updateTimeRemaining.bind(this),
       1000
@@ -60,6 +65,7 @@ export default class ParkedView extends React.Component {
   }
 
   componentWillUnmount() {
+    this._mounted = false
     clearInterval(this._countdownInterval);
   }
 
