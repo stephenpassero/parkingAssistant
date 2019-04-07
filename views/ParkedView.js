@@ -2,11 +2,19 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableHighlight } from "react-native";
 import CountDown from "react-native-countdown-component";
 import PropTypes from "prop-types";
+import CrimeAlerts from '../models/CrimeAlerts'
 
 export default class ParkedView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { timeRemaining: undefined };
+    this.state = {
+      timeRemaining: undefined,
+      crimeNearby: undefined
+    };
+  }
+
+  static propTypes = {
+    parkingSpot : PropTypes.object.isRequired
   }
 
   updateTimeRemaining() {
@@ -16,17 +24,39 @@ export default class ParkedView extends React.Component {
       };
     });
   }
+
+  updateCrimeAlert(crime) {
+    this.setState(() => {
+      return {
+        crimeNearby: crime
+      }
+    })
+  }
+
+  requestCrimeAlerts() {
+    new CrimeAlerts().getAlertsFor(this.props.parkingSpot.latitude(), this.props.parkingSpot.longitude())
+                     .then(crime => this.updateCrimeAlert(crime))
+                     .catch(error => console.log('Unable to fetch crime alerts: ' + error))
+  }
+
   componentDidMount() {
     this._countdownInterval = setInterval(
       this.updateTimeRemaining.bind(this),
       1000
     );
+    this.requestCrimeAlerts()
   }
 
   componentWillUnmount() {
     clearInterval(this._countdownInterval);
   }
 
+  renderCrimeAlerts() {
+    return this.state.crimeNearby ?
+      <Text>Beware of {this.state.crimeNearby} nearby!</Text> :
+      null
+  }
+  
   render() {
     if (this.state.timeRemaining) {
       return (
@@ -35,6 +65,7 @@ export default class ParkedView extends React.Component {
         // </View>
 
         <View style={styles.container}>
+          {this.renderCrimeAlerts()}
           <Text style={styles.paragraph}>
             Time remaining until you need to move your car
           </Text>
