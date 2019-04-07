@@ -1,5 +1,7 @@
+
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import PropTypes from 'prop-types'
 
 const styles = StyleSheet.create({
   container: {
@@ -10,11 +12,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class DummyView extends React.Component {
+export default class StreetParkingSpotView extends React.Component {
+
+  static propTypes = {
+    parkingSpot : PropTypes.object.isRequired
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
+        <Text>You are parked at {this.props.parkingSpot.location().latitude}, {this.props.parkingSpot.location().longitude}</Text>
       </View>
     );
   }
