@@ -15,6 +15,7 @@ export default class StreetParkingRules {
            !shouldBeParkingOnOddSide && streetSide === 'even'
   }
 
+
   switchSidesAt(dateTime) {
     return new Date(
       dateTime.getFullYear(),
@@ -37,7 +38,7 @@ export default class StreetParkingRules {
     }
 
     if (this.onCorrectSide(shouldBeParkingOnOddSide, streetSide)) {
-      return (timeToSwitchSides - dateTime) / 60000
+      return (timeToSwitchSides - dateTime) / 1000
     }
     return 0
   }

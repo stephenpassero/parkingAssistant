@@ -11,6 +11,7 @@ import PropTypes from "prop-types";
 import CrimeAlerts from "../models/CrimeAlerts";
 import compass_pointer from "./../assets/compass_pointer.png";
 
+
 export default class ParkedView extends React.Component {
   constructor(props) {
     super(props);
@@ -71,10 +72,6 @@ export default class ParkedView extends React.Component {
   render() {
     if (this.state.timeRemaining) {
       return (
-        // <View style={styles.container}>
-        //   <Text>You have {this.state.timeRemaining} minutes until you need to move your car</Text>
-        // </View>
-
         <View style={styles.container}>
           <Image
             source={compass_pointer}
@@ -87,11 +84,6 @@ export default class ParkedView extends React.Component {
             Time remaining until you need to move your car
           </Text>
           <CountDown
-            // style={{
-            //   digitBgColor: "#2196F3",
-            //   digitTxtColor: "white",
-            //   timeTxtColor: "white"
-            // }}
             until={this.state.timeRemaining}
             //duration of countdown in seconds
             timetoShow={["H", "M", "S"]}
@@ -103,19 +95,9 @@ export default class ParkedView extends React.Component {
             size={35}
           />
           <TouchableHighlight
-            // onPress={this.getLatLong.bind(this)}
+            onPress={this.props.cancel}
             underlayColor="white"
-            accessibilityLabel="Park Here button"
-          >
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>Park Here</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            // onPress={this.getLatLong.bind(this)}
-            underlayColor="white"
-            accessibilityLabel="Cancel Notification button"
-          >
+            accessibilityLabel="Cancel Notification button">
             <View style={styles.button}>
               <Text style={styles.buttonText}>Cancel</Text>
             </View>

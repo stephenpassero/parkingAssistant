@@ -15,14 +15,14 @@ describe("StreetParkingRules", () => {
         it('returns minutes until switch', () => {
           const rules = new StreetParkingRules()
           const aWednesdayMorning = new Date(2019, 3, 3, 18, 59)
-          expect(rules.timeRemainingOnSide(aWednesdayMorning, 'odd')).toEqual(1)
+          expect(rules.timeRemainingOnSide(aWednesdayMorning, 'odd')).toEqual(60)
         })
       })
       describe('and car is on even side of street on a Tuesday', () => {
         it('returns minutes until switch', () => {
           const rules = new StreetParkingRules()
           const aWednesdayMorning = new Date(2019, 3, 2, 18, 59)
-          expect(rules.timeRemainingOnSide(aWednesdayMorning, 'even')).toEqual(1)
+          expect(rules.timeRemainingOnSide(aWednesdayMorning, 'even')).toEqual(60)
         })
       })
     })
@@ -38,14 +38,14 @@ describe("StreetParkingRules", () => {
         it('returns minutes until switch', () => {
           const rules = new StreetParkingRules()
           const aWednesdayMorning = new Date(2019, 3, 3, 19, 1)
-          expect(rules.timeRemainingOnSide(aWednesdayMorning, 'even')).toEqual(1439)
+          expect(rules.timeRemainingOnSide(aWednesdayMorning, 'even')).toEqual(1439 * 60)
         })
       })
       describe('and car is on odd side of street on a Tuesday', () => {
         it('returns minutes until switch', () => {
           const rules = new StreetParkingRules()
           const aWednesdayMorning = new Date(2019, 3, 2, 19, 1)
-          expect(rules.timeRemainingOnSide(aWednesdayMorning, 'odd')).toEqual(1439)
+          expect(rules.timeRemainingOnSide(aWednesdayMorning, 'odd')).toEqual(1439 * 60)
         })
       })
     })

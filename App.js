@@ -7,6 +7,7 @@ import Loading from './views/Loading'
 import CompassView from './views/CompassView'
 import HomeView from './views/HomeView'
 import ParkedView from './views/ParkedView'
+import Notifications from 'expo'
 
 export default class App extends React.Component {
 
@@ -16,6 +17,7 @@ export default class App extends React.Component {
       location: false,
       heading: false
     }
+    this.cancelCountdown = this.cancelCountdown.bind(this)
   }
 
   setLocation(position) {
@@ -30,6 +32,15 @@ export default class App extends React.Component {
     this.setState(() => {
       return {
         heading: newHeading
+      }
+    })
+  }
+
+  cancelCountdown(){
+    this.setState(() => {
+      return {
+        position: false,
+        heading: false
       }
     })
   }
@@ -51,7 +62,7 @@ export default class App extends React.Component {
       )
     } else if (this.state.position && this.state.heading){
       return (
-        <ParkedView parkingSpot={this._parkingSpot()}/>
+        <ParkedView cancel={this.cancelCountdown} parkingSpot={this._parkingSpot()}/>
       )
     } else{
       return (
