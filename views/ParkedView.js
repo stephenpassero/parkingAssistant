@@ -18,13 +18,19 @@ export default class ParkedView extends React.Component {
     this.state = {timeRemaining: undefined}
   }
 
-  componentDidMount() {
-    this.interval = setInterval(() => {
-      this.setState({ timeRemaining: this.props.parkingSpot.timeRemaining() })
-    }, 1000);
+  updateTimeRemaining() {
+    this.setState(() => {
+      return {
+        timeRemaining: this.props.parkingSpot.timeRemaining()
+      }
+    })
   }
+  componentDidMount() {
+    this._countdownInterval = setInterval(this.updateTimeRemaining.bind(this), 1000);
+  }
+
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearInterval(this._countdownInterval);
   }
 
   render() {
