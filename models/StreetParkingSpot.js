@@ -58,8 +58,8 @@ class StreetParkingSpot {
   }
 
   locationInDirection(direction, distance){
-    const dx = distance * Math.cos(Math.radians(direction))
-    const dy = distance * Math.sin(Math.radians(direction))
+    const dx = distance * Math.sin(Math.radians(direction))
+    const dy = distance * Math.cos(Math.radians(direction))
     const deltaLongitude = dx / (111320 * Math.cos(Math.radians(this.latitude())))
     const deltaLatitude = dy / 110540
     const finalLongitude = this.longitude() + deltaLongitude
@@ -71,11 +71,11 @@ class StreetParkingSpot {
   }
 
   toTheRight() {
-    return this.heading() - 90
+    return (this.heading() + 90) % 360
   }
 
   toTheLeft() {
-    return this.heading() + 90
+    return this.heading() - 90
   }
 
   isEven(streetNumber){
@@ -83,10 +83,10 @@ class StreetParkingSpot {
   }
 
   async _calculateSide() {
-    const distance = 20 // We always want to get a position 20 feet away
+    const distance = 30 // We always want to get a position 20 feet away
     const rightSideStreetLatLong = this.locationInDirection(this.toTheRight(), distance)
     const rightSideStreetAddr = await this._navigator.lookupAddress(rightSideStreetLatLong)
-
+    console.log(`30' to your right is ${JSON.stringify(rightSideStreetLatLong)}, maybe ${JSON.stringify(rightSideStreetAddr)}?`)
     const leftSideStreetLatLong = this.locationInDirection(this.toTheLeft(), distance * 2)
     const leftSideStreetAddr = await this._navigator.lookupAddress(leftSideStreetLatLong)
 
