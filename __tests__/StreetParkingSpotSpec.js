@@ -1,70 +1,37 @@
 import StreetParkingSpot from "../models/StreetParkingSpot"
 
 describe("StreetParkingSpot", () => {
-  let spot, coordinates, navigator
+
+  const makeLookupAddrResponse = (houseNumber, streetName) => {
+    return Promise.resolve(
+      {
+        'streetNumber' : houseNumber,
+        'route': streetName
+      })
+  }
+
+  let spot, coordinates, navigator, alerts
   beforeEach(() => {
     navigator = {
-      lookupAddress: jest.fn()
+      lookupAddress: jest.fn().mockReturnValue(makeLookupAddrResponse('214', "Melrose Street"))
+    }
+    alerts = {
+      scheduleAlert: jest.fn().mockReturnValue(Promise.resolve())
     }
   })
+
   describe("#location", () => {
-    it("returns the location passed in", () => {
+    it("returns the location passed in", async () => {
       const coordinates = {
         latitude: 45,
-        longitude: 30
+        longitude: 30,
+        heading: 0
       }
-      expect(new StreetParkingSpot(coordinates).location().latitude).toEqual(45)
-      expect(new StreetParkingSpot(coordinates).location().longitude).toEqual(30)
+      const spot = new StreetParkingSpot(coordinates, navigator, alerts)
+      await spot.initialize()
+      expect(spot.latitude()).toEqual(45)
+      expect(spot.longitude()).toEqual(30)
     })
   })
 
-  describe('#streetSide', () => {
-    const makeLookupAddrResponse = (houseNumber, streetName) => {
-      return Promise.resolve(
-        {
-          'streetNumber' : houseNumber,
-          'route': streetName
-        })
-      }
-    describe('when facing west in front of 214 Melrose St, 14619', () => {
-
-      beforeEach(() => {
-        coordinates = {
-          latitude: 0,
-          longitude: 0,
-          heading: 0,
-        }
-        navigator.lookupAddress
-                 .mockReturnValueOnce(makeLookupAddrResponse('214', "Melrose Street"))
-                 .mockReturnValueOnce(makeLookupAddrResponse('211', "Melrose Street"))
-        spot = new StreetParkingSpot(coordinates, navigator)
-      })
-
-      it('is even', () => {
-        expect.assertions(1)
-        return expect(spot.side()).resolves.toEqual('even')
-      })
-    })
-
-    describe('when facing east in front of 214 Melrose St, 14619', () => {
-
-      beforeEach(() => {
-        coordinates = {
-          latitude: 0,
-          longitude: 0,
-          heading: 0,
-        }
-        navigator.lookupAddress
-                 .mockReturnValueOnce(makeLookupAddrResponse(215, "Melrose St"))
-                 .mockReturnValueOnce(makeLookupAddrResponse(214, "Melrose St"))
-        spot = new StreetParkingSpot(coordinates, navigator)
-      })
-
-      it('is odd', () => {
-        expect.assertions(1)
-        return expect(spot.side()).resolves.toEqual('odd')
-      })
-    })
-
-  })
 })

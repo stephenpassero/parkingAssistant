@@ -14,9 +14,16 @@
     "react-native-countdown-component": "^2.2.0"
   },
   "devDependencies": {
-    "babel-preset-expo": "^5.0.0",
+    "babel-preset-expo": "^5.1.1",
     "jest": "^24.7.1",
+    "jest-expo": "^32.0.0",
     "prop-types": "^15.7.2"
+  },
+  "jest": {
+    "preset": "jest-expo",
+    "transform": {
+      "^.+\\.js$": "babel-jest"
+    }
   },
   "private": true
 }

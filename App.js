@@ -1,23 +1,22 @@
 import React from 'react';
 import Navigator from './utils/Navigator'
+import Alerts from './utils/Alerts'
 import StreetParkingSpot from './models/StreetParkingSpot'
-import StreetParkingSpotView from './views/StreetParkingSpotView'
-import CurrentLocationView from './views/CurrentLocationView'
-import Loading from './views/Loading'
 import CompassView from './views/CompassView'
 import HomeView from './views/HomeView'
 import ParkedView from './views/ParkedView'
-import Notifications from 'expo'
+import { Text, View } from "react-native";
 
 export default class App extends React.Component {
 
   constructor(props){
     super(props)
+    this._alerts = new Alerts()
     this.state = {
       location: false,
-      heading: false
+      heading: false,
+      parkingSpot: false
     }
-    this.cancelCountdown = this.cancelCountdown.bind(this)
   }
 
   setLocation(position) {
@@ -37,21 +36,38 @@ export default class App extends React.Component {
   }
 
   cancelCountdown(){
+    this._alerts.cancelScheduledAlerts()
     this.setState(() => {
       return {
-        position: false,
-        heading: false
+        position:    false,
+        heading:     false,
+        parkingSpot: false
       }
     })
   }
 
-  _parkingSpot() {
+  setParkingSpot(newParkingSpot) {
+    this.setState(() => {
+      return {
+        parkingSpot: newParkingSpot
+      }
+    })
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.position && this.state.heading && !this.state.parkingSpot) {
+      const spot = this._makeParkingSpot()
+      spot.initialize().then(() => this.setParkingSpot(spot))
+    }
+  }
+
+  _makeParkingSpot() {
     const coordinatesWithHeading = Object.assign(
       {},
       this.state.position.coords,
       { heading: this.state.heading }
     )
-    return new StreetParkingSpot(coordinatesWithHeading, new Navigator())
+    return new StreetParkingSpot(coordinatesWithHeading, new Navigator(), this._alerts)
   }
 
 
@@ -60,11 +76,14 @@ export default class App extends React.Component {
       return (
         <CompassView setHeading={this.setHeading.bind(this)}/>
       )
-    } else if (this.state.position && this.state.heading){
+    } else if (this.state.position && this.state.heading && !this.state.parkingSpot) {
+      return <View/>
+    } else if (this.state.parkingSpot){
       return (
-        <ParkedView cancel={this.cancelCountdown} parkingSpot={this._parkingSpot()}/>
+        <ParkedView cancel={this.cancelCountdown.bind(this)}
+                    parkingSpot={this.state.parkingSpot}/>
       )
-    } else{
+    } else if (!this.state.position && !this.state.heading) {
       return (
         <HomeView setLocation={this.setLocation.bind(this)}/>
       )

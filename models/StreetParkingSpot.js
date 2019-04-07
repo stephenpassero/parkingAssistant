@@ -1,5 +1,4 @@
 import StreetParkingRules from './StreetParkingRules'
-import { Permissions, Notifications } from 'expo'
 
 Math.radians = function(degrees) {
   return degrees * Math.PI / 180;
@@ -17,16 +16,25 @@ class StreetParkingSpot {
    * @param {Coordinates} coordinates - Geolocation Web API Coordinate object
    * @param {Navigator} navigator - Reverse geocode API
    */
-  constructor(coordinates, navigator){
+  constructor(coordinates, navigator, alerts){
     this._coordinates = coordinates
     this._navigator = navigator
     this._rules = new StreetParkingRules()
-    this._lookupAddress()
-        .then(() => this._calculateSide())
-        .then(() => this._scheduleAlert())
-        .catch(error => {
-          console.log('Unable to calculate side of street: ' + error)
-        })
+    this._alerts = alerts
+  }
+
+  async initialize() {
+    try {
+      await this._lookupAddress()
+      await this._calculateSide()
+      await this._scheduleAlert()
+    } catch (error) {
+      console.log('Unable to calculate side of street: ' + error)
+    }
+  }
+
+  async _scheduleAlert() {
+    await this._alerts.scheduleAlert(this._alertTime())
   }
 
   async _lookupAddress() {
@@ -85,42 +93,12 @@ class StreetParkingSpot {
     this._side = this.isEven(rightSideStreetAddr.streetNumber) ? 'even' : 'odd'
   }
 
-  async _scheduleAlert() {
-    await this._requestPermissionToNotifyUser()
-    await this._scheduleLocalNotification()
-  }
-
   _alertTime() {
-    const alertWindow = 15 // minutes
-    const timeUntilAlertWindow = this.timeRemaining() - alertWindow // minutes
-    // CHANGE THIS AFTER DEMO
-    const alertTime = new Date().getTime() + 10000// milliseconds
+    const alertWindow = 15 * 60 // seconds
+    const timeUntilAlertWindow = this.timeRemaining() - alertWindow // seconds
+    const alertTime = new Date().getTime() + timeUntilAlertWindow * 1000 // milliseconds
     console.log(`Scheduling alert at ${alertTime}`)
     return alertTime
-  }
-
-  async _requestPermissionToNotifyUser() {
-    this._notification = await Permissions.askAsync(Permissions.NOTIFICATIONS)
-  }
-
-
-  async _scheduleLocalNotification() {
-    if(this._notification.status === 'granted'){
-      this._notificationId = await Notifications.scheduleLocalNotificationAsync(
-        {
-          title: 'Parking Ticket Imminent',
-          body:  'You have 15 minutes to move your car before you may be ticketed',
-          ios:   {
-            sound: true
-          }
-        }, // LocalNotification
-        {
-          time: this._alertTime()
-        } // schedulingOptions
-      )
-    }else{
-      alert('You will need to allow notifications for this app')
-    }
   }
 
   timeRemaining(){
