@@ -61,6 +61,15 @@ export default class Navigator {
     })
   }
 
+  findFirstAddressComponentLongName(addressParts, addressType) {
+    const partOfInterest = addressParts.filter(part => part.types[0] === addressType)[0]
+    if (partOfInterest) {
+      return partOfInterest.long_name
+    }else{
+      console.log(`Could not find ${addressType} in address parts!`)
+    }
+  }
+
   async lookupAddress(coordinates){
     const keyParam = `key=AIzaSyC9Dcx8pDlYPPQp2TGGIFNx0vEonnhjb8o`
     const latLongParam = `latlng=${coordinates.latitude},${coordinates.longitude}`
@@ -72,10 +81,18 @@ export default class Navigator {
 
     const result = await response.json()
     const mostSpecificAddress = result.results[0]
-    return {
-      "streetNumber" : mostSpecificAddress.address_components[0].long_name,
-      "route" : mostSpecificAddress.address_components[1].long_name
-    }
+    const addressParts = mostSpecificAddress.address_components
 
+    const streetNumber = this.findFirstAddressComponentLongName(addressParts, 'street_number')
+    const street = this.findFirstAddressComponentLongName(addressParts, 'route')
+
+    if (streetNumber && street) {
+      return {
+        "streetNumber" : streetNumber,
+        "route" : street
+      }
+    } else {
+      console.log("Could not reverse geocode!")
+    }
   }
 }
