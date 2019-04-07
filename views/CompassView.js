@@ -5,7 +5,6 @@ import {
   View,
   TouchableHighlight,
   Image,
-  // ImageBackground,
   Dimensions
 } from "react-native";
 import PropTypes from "prop-types";
@@ -76,13 +75,10 @@ export default class CompassView extends React.Component {
           }}
         />
         <Text style={styles.heading}>Heading: {this.state.heading}</Text>
-
-        {/* <Button title="Ok" onPress={() => this.props.setHeading(this.state.heading)}/> */}
         <TouchableHighlight
           onPress={() => this.props.setHeading(this.state.heading)}
           underlayColor="white"
-          accessibilityLabel="Park Here button"
-        >
+          accessibilityLabel="Park Here button">
           <View style={styles.button}>
             <Text style={styles.buttonText}>OK</Text>
           </View>

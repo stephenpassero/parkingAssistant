@@ -93,18 +93,19 @@ class StreetParkingSpot {
   _alertTime() {
     const alertWindow = 15 // minutes
     const timeUntilAlertWindow = this.timeRemaining() - alertWindow // minutes
-    const alertTime = new Date().getTime() + timeUntilAlertWindow * 60000 // milliseconds
+    // CHANGE THIS AFTER DEMO
+    const alertTime = new Date().getTime() + 10000// milliseconds
     console.log(`Scheduling alert at ${alertTime}`)
     return alertTime
   }
 
   async _requestPermissionToNotifyUser() {
-    this._status = await Permissions.getAsync(Permissions.NOTIFICATIONS)
+    this._notification = await Permissions.askAsync(Permissions.NOTIFICATIONS)
   }
 
 
   async _scheduleLocalNotification() {
-    if(this._status === 'granted'){
+    if(this._notification.status === 'granted'){
       this._notificationId = await Notifications.scheduleLocalNotificationAsync(
         {
           title: 'Parking Ticket Imminent',
@@ -117,8 +118,8 @@ class StreetParkingSpot {
           time: this._alertTime()
         } // schedulingOptions
       )
-    }else {
-      alert("You have notifications disabled. If you want this to work, then you will need to enable notifications")
+    }else{
+      alert('You will need to allow notifications for this app')
     }
   }
 
