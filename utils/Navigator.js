@@ -57,9 +57,22 @@ export default class Navigator {
   }
 
   watchHeading(options, headingCallback) {
-    return Magnetometer.addListener(magData => {
-      const heading = this._degree(this._angle(magData))
-      headingCallback(heading)
+    let lastAccuracy = 0
+    return Location.watchHeadingAsync(({magHeading, trueHeading, accuracy}) => {
+      if (accuracy !== lastAccuracy) {
+        let uncertainty = "<20"
+        if (accuracy === 2) {
+          uncertainty = "<35"
+        } else if (accuracy === 1) {
+          uncertainty = "<50"
+        } else if (accuracy === 0) {
+          uncertainty = ">50"
+        }
+        console.log(`Heading ${trueHeading} +/- ${uncertainty}`)
+        lastAccuracy = accuracy
+      }
+
+      headingCallback(Math.round(trueHeading))
     })
   }
 
