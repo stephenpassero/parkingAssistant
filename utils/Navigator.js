@@ -36,26 +36,6 @@ export default class Navigator {
     })
   }
 
-  _degree(angle) {
-    return angle - 90 >= 0 ? angle - 90 : angle + 271;
-  }
-
-  _angle(magnetometer) {
-
-    if (magnetometer) {
-      let {x, y} = magnetometer;
-
-      if (Math.atan2(y, x) >= 0) {
-        angle = Math.atan2(y, x) * (180 / Math.PI);
-      }
-      else {
-        angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
-      }
-    }
-
-    return Math.round(angle);
-  }
-
   watchHeading(options, headingCallback) {
     let lastAccuracy = 0
     return Location.watchHeadingAsync(({magHeading, trueHeading, accuracy}) => {
