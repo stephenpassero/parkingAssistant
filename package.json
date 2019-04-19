@@ -19,6 +19,7 @@
     "enzyme-adapter-react-16": "^1.12.1",
     "jest": "^24.7.1",
     "jest-enzyme": "^7.0.2",
+    "jest-enzyme-selector-exists": "^1.1.0",
     "jest-expo": "^32.0.0",
     "prop-types": "^15.7.2",
     "react-addons-test-utils": "^15.6.2",

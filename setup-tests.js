@@ -1,7 +1,10 @@
-import 'react-native';
-import 'jest-enzyme';
-import Adapter from 'enzyme-adapter-react-16';
-import Enzyme from 'enzyme';
+import 'react-native'
+import 'jest-enzyme'
+import Adapter from 'enzyme-adapter-react-16'
+import Enzyme from 'enzyme'
+import { toExist } from 'jest-enzyme-selector-exists'
+
+expect.extend(toExist)
 
 /**
  * Set up DOM in node.js environment for Enzyme to mount to

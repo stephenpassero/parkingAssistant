@@ -108,7 +108,7 @@ export default class ParkedView extends React.Component {
     if (this.state.timeRemaining === undefined) {
       return (
         <View style={styles.container}>
-          <Text style={styles.paragraph}>Calculating time remaining...</Text>
+          <Text testID="calculatingText" style={styles.paragraph}>Calculating time remaining...</Text>
         </View>
       )
     }
