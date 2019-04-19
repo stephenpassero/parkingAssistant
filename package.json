@@ -5,7 +5,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "eject": "expo eject",
-    "test": "./node_modules/.bin/jest"
+    "test": "./node_modules/.bin/jest --watch"
   },
   "dependencies": {
     "expo": "^32.0.0",
@@ -15,15 +15,23 @@
   },
   "devDependencies": {
     "babel-preset-expo": "^5.1.1",
+    "enzyme": "^3.9.0",
+    "enzyme-adapter-react-16": "^1.12.1",
     "jest": "^24.7.1",
+    "jest-enzyme": "^7.0.2",
     "jest-expo": "^32.0.0",
-    "prop-types": "^15.7.2"
+    "prop-types": "^15.7.2",
+    "react-addons-test-utils": "^15.6.2",
+    "react-dom": "^16.8.6"
   },
   "jest": {
     "preset": "jest-expo",
     "transform": {
       "^.+\\.js$": "babel-jest"
-    }
+    },
+    "setupFilesAfterEnv": [
+      "<rootDir>/setup-tests.js"
+    ]
   },
   "private": true
 }

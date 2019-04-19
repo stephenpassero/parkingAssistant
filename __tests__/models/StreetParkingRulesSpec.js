@@ -1,4 +1,4 @@
-import StreetParkingRules from "../models/StreetParkingRules"
+import StreetParkingRules from "../../models/StreetParkingRules"
 
 describe("StreetParkingRules", () => {
 
