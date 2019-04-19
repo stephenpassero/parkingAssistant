@@ -16,7 +16,7 @@ export default class ParkedView extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      timeRemaining: undefined,
+      timeRemaining: this.props.parkingSpot.timeRemaining(),
       crimeNearby: undefined
     };
   }
@@ -107,7 +107,7 @@ export default class ParkedView extends React.Component {
   render() {
     if (this.state.timeRemaining === undefined) {
       return (
-        <View style={styles.container}>
+        <View style={styles.container} testID="calculatingView">
           <Text style={styles.paragraph}>Calculating time remaining...</Text>
         </View>
       )
@@ -122,7 +122,7 @@ export default class ParkedView extends React.Component {
     }
     else {
       return (
-        <View style={styles.container}>
+        <View style={styles.container} testID="countdownView">
           {this.renderCrimeAlertIcon()}
           <Text style={styles.paragraph}>
             Time remaining until you need to move your car

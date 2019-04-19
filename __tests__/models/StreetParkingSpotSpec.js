@@ -1,4 +1,4 @@
-import StreetParkingSpot from "../models/StreetParkingSpot"
+import StreetParkingSpot from "../../models/StreetParkingSpot"
 
 describe("StreetParkingSpot", () => {
 
