@@ -30,10 +30,8 @@ export default class CompassView extends React.Component {
   }
 
   componentDidMount() {
-    this._subscription = this._navigator.watchHeading(
-      {},
-      this.updateHeading.bind(this)
-    );
+    this._navigator.watchHeading({}, this.updateHeading.bind(this))
+        .then(subscription => this._subscription = subscription);
   }
 
   componentWillUnmount() {

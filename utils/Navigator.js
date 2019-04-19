@@ -36,30 +36,23 @@ export default class Navigator {
     })
   }
 
-  _degree(angle) {
-    return angle - 90 >= 0 ? angle - 90 : angle + 271;
-  }
-
-  _angle(magnetometer) {
-
-    if (magnetometer) {
-      let {x, y} = magnetometer;
-
-      if (Math.atan2(y, x) >= 0) {
-        angle = Math.atan2(y, x) * (180 / Math.PI);
-      }
-      else {
-        angle = (Math.atan2(y, x) + 2 * Math.PI) * (180 / Math.PI);
-      }
-    }
-
-    return Math.round(angle);
-  }
-
   watchHeading(options, headingCallback) {
-    return Magnetometer.addListener(magData => {
-      const heading = this._degree(this._angle(magData))
-      headingCallback(heading)
+    let lastAccuracy = 0
+    return Location.watchHeadingAsync(({magHeading, trueHeading, accuracy}) => {
+      if (accuracy !== lastAccuracy) {
+        let uncertainty = "<20"
+        if (accuracy === 2) {
+          uncertainty = "<35"
+        } else if (accuracy === 1) {
+          uncertainty = "<50"
+        } else if (accuracy === 0) {
+          uncertainty = ">50"
+        }
+        console.log(`Heading ${trueHeading} +/- ${uncertainty}`)
+        lastAccuracy = accuracy
+      }
+
+      headingCallback(Math.round(trueHeading))
     })
   }
 
