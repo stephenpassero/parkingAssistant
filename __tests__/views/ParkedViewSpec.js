@@ -26,12 +26,16 @@ describe('ParkedView', () => {
       it('tells the user to wait', () => {
         dummyParkingSpot.timeRemaining = () => undefined
         const wrapper = mountView()
-        expect(wrapper.find('[testID="calculatingText"]')).toExist()
+        expect(wrapper.find('[testID="calculatingView"]')).toExist()
       })
     })
 
     describe('when time remaining is known', () => {
-
+      it('shows the time remaining', () => {
+        dummyParkingSpot.timeRemaining = () => 5
+        const wrapper = mountView()
+        expect(wrapper.find('[testID="countdownView"]')).toExist()
+      })
     })
   })
 })
