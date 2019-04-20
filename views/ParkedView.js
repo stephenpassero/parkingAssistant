@@ -114,7 +114,7 @@ export default class ParkedView extends React.Component {
     }
     else if (this.state.timeRemaining === 0) {
       return (
-        <View style={styles.container}>
+        <View style={styles.container} testID="timeExpiredView">
           <Text style={styles.paragraph}>You are not permitted on this side of the street at this time of day!</Text>
           {this.renderDismissButton()}
         </View>
