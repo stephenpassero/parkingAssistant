@@ -45,8 +45,7 @@ describe('ParkedView', () => {
         let wrapper = mountView()
         expect(wrapper.find('[testID="countdownView"]')).toExist()
         dummyParkingSpot.timeRemaining = () => 0
-        wrapper = mountView()
-        expect(wrapper.find('[testID="timeExpiredView"]')).toExist()
+        expect(wrapper.update().find('[testID="timeExpiredView"]')).toExist()
       })
     })
   })
