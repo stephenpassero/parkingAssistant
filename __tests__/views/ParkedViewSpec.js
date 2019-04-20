@@ -37,5 +37,17 @@ describe('ParkedView', () => {
         expect(wrapper.find('[testID="countdownView"]')).toExist()
       })
     })
+
+
+    describe('when time remaining has expired', () => {
+      it('tells the user that they are not permitted on that side of the street', () => {
+        dummyParkingSpot.timeRemaining = () => 5
+        let wrapper = mountView()
+        expect(wrapper.find('[testID="countdownView"]')).toExist()
+        dummyParkingSpot.timeRemaining = () => 0
+        wrapper = mountView()
+        expect(wrapper.find('[testID="timeExpiredView"]')).toExist()
+      })
+    })
   })
 })
