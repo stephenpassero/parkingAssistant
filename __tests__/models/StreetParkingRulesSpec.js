@@ -57,9 +57,18 @@ describe("StreetParkingRules", () => {
       })
 
       describe('and car is on even side of the street', () => {
-        it('returns minutes until switch', () => {
-          const sundayNoon = new Date(2019, 3, 21, 12, 1)
-          expect(rules.timeRemainingOnSide(sundayNoon, 'even')).toEqual(0)
+        describe('at noon', () => {
+          it('returns 0', () => {
+            const sundayNoon = new Date(2019, 3, 21, 12, 1)
+            expect(rules.timeRemainingOnSide(sundayNoon, 'even')).toEqual(0)
+          })
+        })
+
+        describe('at 8 PM', () => {
+          it('returns 0', () => {
+            const sundayAtEight = new Date(2019, 3, 21, 20, 1)
+            expect(rules.timeRemainingOnSide(sundayAtEight, 'even')).toEqual(0)
+          })
         })
       })
     })
