@@ -2,9 +2,9 @@ import React from 'react';
 import Navigator from './utils/Navigator'
 import Alerts from './utils/Alerts'
 import StreetParkingSpot from './models/StreetParkingSpot'
-import CompassView from './views/CompassView'
-import HomeView from './views/HomeView'
-import ParkedView from './views/ParkedView'
+import CompassView from './views/Compass/CompassView'
+import HomeView from './views/Home/HomeView'
+import ParkedView from './views/Parked/ParkedView'
 import { Text, View } from "react-native";
 
 export default class App extends React.Component {

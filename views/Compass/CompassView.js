@@ -1,19 +1,13 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableHighlight,
-  Image,
-  Dimensions
-} from "react-native";
+import { Text, View, TouchableHighlight, Image, Dimensions } from "react-native";
 import PropTypes from "prop-types";
-import Navigator from "../utils/Navigator";
-
-import compass_bg from "./../assets/compass_bg.png";
-import compass_pointer from "./../assets/compass_pointer.png";
+import { styles } from './styles'
+import Navigator from "../../utils/Navigator";
+import compass_bg from "../../assets/compass_bg.png";
+import compass_pointer from "../../assets/compass_pointer.png";
 
 const { height, width } = Dimensions.get("window");
+
 export default class CompassView extends React.Component {
   constructor(props) {
     super(props);
@@ -73,32 +67,3 @@ export default class CompassView extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#173753",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  button: {
-    marginBottom: 30,
-    width: 260,
-    alignItems: "center",
-    backgroundColor: "#D3D4D9",
-    borderRadius: 10
-  },
-  buttonText: {
-    padding: 20,
-    color: "#3066BE",
-    fontSize: 30,
-    fontWeight: "bold"
-  },
-  heading: {
-    textAlign: "center",
-    color: "#D3D4D9",
-    fontSize: 30,
-    fontWeight: "bold",
-    padding: 20
-  }
-});
