@@ -6,10 +6,10 @@ export default class StreetParkingRules {
       oddSideDays : [
         2, 4, 6
       ],
-      sunday: 1,
+      exceptionDay: 1,
       switchHours: 19,
       // At the very beginning of Sunday, you will need to switch your car in 43 hours
-      sundaySwitchHours: 43
+      exceptionSwitchHours: 43
     }
   }
 
@@ -20,12 +20,12 @@ export default class StreetParkingRules {
 
 
   switchSidesAt(dateTime, day) {
-    if(day === this._rules.sunday){
+    if(day === this._rules.exceptionDay){
       return new Date(
         dateTime.getFullYear(),
         dateTime.getMonth(),
         dateTime.getDate(),
-        this._rules.sundaySwitchHours,
+        this._rules.exceptionSwitchHours,
         0,
         0
       )
