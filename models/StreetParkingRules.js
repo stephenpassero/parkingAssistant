@@ -4,9 +4,12 @@ export default class StreetParkingRules {
 
     this._rules = {
       oddSideDays : [
-        1, 2, 4, 6
+        2, 4, 6
       ],
-      oddSideDaysSwitchHours: 19
+      exceptionDay: 1,
+      switchHours: 19,
+      // At the very beginning of Sunday, you will need to switch your car in 43 hours
+      exceptionSwitchHours: 43
     }
   }
 
@@ -16,12 +19,22 @@ export default class StreetParkingRules {
   }
 
 
-  switchSidesAt(dateTime) {
+  switchSidesAt(dateTime, day) {
+    if(day === this._rules.exceptionDay){
+      return new Date(
+        dateTime.getFullYear(),
+        dateTime.getMonth(),
+        dateTime.getDate(),
+        this._rules.exceptionSwitchHours,
+        0,
+        0
+      )
+    }
     return new Date(
       dateTime.getFullYear(),
       dateTime.getMonth(),
       dateTime.getDate(),
-      this._rules.oddSideDaysSwitchHours,
+      this._rules.switchHours,
       0,
       0
     )
@@ -29,9 +42,9 @@ export default class StreetParkingRules {
 
   timeRemainingOnSide(dateTime, streetSide) {
     const day = dateTime.getDay() + 1 // Sunday is 1, not 0
-
     let shouldBeParkingOnOddSide = this._rules.oddSideDays.includes(day)
-    let timeToSwitchSides = this.switchSidesAt(dateTime)
+    let timeToSwitchSides = this.switchSidesAt(dateTime, day)
+
     if (timeToSwitchSides <= dateTime) {
       shouldBeParkingOnOddSide = !shouldBeParkingOnOddSide
       timeToSwitchSides.setDate(timeToSwitchSides.getDate() + 1)
